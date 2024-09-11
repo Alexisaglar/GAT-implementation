@@ -1,6 +1,6 @@
 # Graph Attention Networks (GAT) Implementation in PyTorch
 
-This project is an implementation of **Graph Attention Networks (GAT)** based on the original paper by Veličković et al. (2018), using PyTorch and PyTorch Geometric.
+This project is an implementation of **Graph Attention Networks (GAT)** based on the original paper by Veličković et al. (2018), using PyTorch Geometric.
 
 ## Key Features
 
