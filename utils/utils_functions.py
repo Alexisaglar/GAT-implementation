@@ -2,7 +2,6 @@ import re
 import os
 
 
-import git
 import numpy as np
 
 

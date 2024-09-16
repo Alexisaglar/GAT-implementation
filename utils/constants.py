@@ -2,7 +2,6 @@ import os
 import enum
 from torch.utils.tensorboard import SummaryWriter
 
-
 # Supported datasets - currently only Cora
 class DatasetType(enum.Enum):
     CORA = 0,
@@ -10,7 +9,7 @@ class DatasetType(enum.Enum):
 
 
 # Networkx is not precisely made with drawing as it's main feature but I experimented with it a bit
-class GraphVisualizationTool(enum.Enum):
+class GraphVisualisationTool(enum.Enum):
     NETWORKX = 0,
     IGRAPH = 1
 
@@ -29,7 +28,7 @@ class LoopPhase(enum.Enum):
     TEST = 2
 
 
-class VisualizationType(enum.Enum):
+class VisualisationType(enum.Enum):
     ATTENTION = 0,
     EMBEDDINGS = 1,
     ENTROPY = 2,

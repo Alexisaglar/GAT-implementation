@@ -8,9 +8,10 @@ from networkx import nodes
 import torch
 import torch.nn as nn
 from torch.optim import Adam
-from torch.optim.optimizer import ParamsT
 
-from utils.constants import BEST_VAL_LOSS, BEST_VAL_PERF, BINARIES_PATH, CHECKPOINTS_PATH, PATIENCE_CNT, LoopPhase
+from data.prepare_data import load_graph_data
+from utils import utils_functions
+from utils.constants import * 
 from models.GAT import GAT
 
 
@@ -35,7 +36,7 @@ def get_main_loop(
     test_labels = node_labels.index_select(node_dim, test_indices)
     
     # node_features shape = (N, FIN), edge_index shape = (2, E)
-    graph_data = (node_fatures, edge_index) # data is packed into tuples because GAT uses nn.sequential which requires it that way
+    graph_data = (node_features, edge_index) # data is packed into tuples because GAT uses nn.sequential which requires it that way
 
     def get_node_labels_indices(phase):
         if phase == LoopPhase.TRAIN:
@@ -62,9 +63,9 @@ def get_main_loop(
         loss = cross_entropy_loss(nodes_unnormalised_scores, gt_node_labels)
 
         if phase == LoopPhase.TRAIN:
-            optimizer.zero_grad() # clean the trainable weights gradients in the computational graph
+            optimiser.zero_grad() # clean the trainable weights gradients in the computational graph
             loss.backward() # compute the gradients for every trainable weight
-            optimizer.step() # apply the gradients to weights
+            optimiser.step() # apply the gradients to weights
 
         # Calculate the main metric - accuracy
         class_predictions = torch.argmax(nodes_unnormalised_scores, dim=-1)
@@ -160,8 +161,8 @@ def train_gat_cora(config):
         config['test_perf'] = -1
 
     torch.save(
-        utils.get_training_state(config, gat),
-        os.path.join(BINARIES_PATH, utils.get_available_binary_name(config['dataset_name']))
+        utils_functions.get_training_state(config, gat),
+        os.path.join(BINARIES_PATH, utils_functions.get_available_binary_name(config['dataset_name']))
 
     )
 
@@ -177,7 +178,7 @@ def get_training_args():
 
     # Dataset related
     parser.add_argument("--dataset_name", choices=[el.name for el in DatasetType], help='dataset to use for training', default=DatasetType.CORA.name)
-    parser.add_argument("--should_visualize", action='store_true', help='should visualize the dataset? (no by default)')
+    parser.add_argument("--should_visualise", action='store_true', help='should visualize the dataset? (no by default)')
 
     # Logging/debugging/checkpoint related (helps a lot with experimentation)
     parser.add_argument("--enable_tensorboard", action='store_true', help="enable tensorboard logging (no by default)")
