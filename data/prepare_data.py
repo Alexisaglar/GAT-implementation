@@ -8,38 +8,7 @@ import networkx as nx
 import numpy as np
 import scipy.sparse as sp
 import torch
-
-
-class DatasetType(enum.Enum):
-    CORA = 0
-
-
-class GraphVisualisationTool(enum.Enum):
-    NETWORKX = 0
-    IGRAPH = 1
-
-
-DATA_DIR_PATH = os.path.join(os.getcwd(), "data")
-CORA_PATH = os.path.join(DATA_DIR_PATH, "cora")
-
-### Cora constant details
-
-CORA_TRAIN_RANGE = [0, 140]
-CORA_VAL_RANGE = [140, 140 + 500]
-CORA_TEST_RANGE = [1708, 1708 + 1000]
-CORA_NUM_INPUT_FEATURES = 1433
-CORA_NUM_CLASSES = 7
-
-cora_label_to_color_map = {
-    0: "red",
-    1: "blue",
-    2: "green",
-    3: "orange",
-    4: "yellow",
-    5: "pink",
-    6: "gray",
-}
-
+from utils.constants import *
 
 def pickle_read(path):
     with open(path, "rb") as file:
