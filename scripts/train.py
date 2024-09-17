@@ -76,9 +76,9 @@ def get_main_loop(
             if config['enable_tensorboard']:
                 pass
             if config['checkpoint_freq'] is not None and (epoch + 1) % config['checkpoint_freq'] == 0:
-                ckpt_model_name = f'gat_{config["datasetname"]}_ckpt_epoch_{epoch + 1}.pth'
+                ckpt_model_name = f'gat_{config["dataset_name"]}_ckpt_epoch_{epoch + 1}.pth'
                 config['test_perf'] = -1
-                torch.save(utils.get_training_state(config, gat), os.path.join(CHECKPOINTS_PATH, ckpt_model_name))
+                torch.save(utils_functions.get_training_state(config, gat), os.path.join(CHECKPOINTS_PATH, ckpt_model_name))
 
         elif phase == LoopPhase.VAL:
             if config['enable_tensorboard']:
@@ -87,9 +87,9 @@ def get_main_loop(
             if config['console_log_freq'] is not None and epoch % config['console_log_freq'] == 0:
                 print(f'GAT training: time elapsed= {(time.time() - time_start):.2f} [s] | epoch={epoch + 1} | val acc={accuracy}')
 
-            if accuracy > BEST_VAL_PERF or loss.item < BEST_VAL_LOSS:
+            if accuracy > BEST_VAL_PERF or loss.item() < BEST_VAL_LOSS:
                 BEST_VAL_PERF = max(accuracy, BEST_VAL_PERF)
-                BEST_VAL_LOSS = min(loss.item, BEST_VAL_LOSS)
+                BEST_VAL_LOSS = min(loss.item(), BEST_VAL_LOSS)
                 PATIENCE_CNT = 0 
             else:
                 PATIENCE_CNT += 1
